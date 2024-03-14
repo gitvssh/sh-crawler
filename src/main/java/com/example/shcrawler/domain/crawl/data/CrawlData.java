@@ -1,7 +1,7 @@
 package com.example.shcrawler.domain.crawl.data;
 
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +11,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class CrawlData {
 
     @Id
@@ -21,4 +20,11 @@ public class CrawlData {
     private String rawContent;
 
     private String crawlContent;
+
+    @Builder
+    public CrawlData(String rawUrl, String rawContent, String crawlContent) {
+        this.rawUrl = rawUrl;
+        this.rawContent = rawContent;
+        this.crawlContent = crawlContent;
+    }
 }
