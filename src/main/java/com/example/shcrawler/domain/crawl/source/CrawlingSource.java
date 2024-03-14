@@ -1,16 +1,20 @@
 package com.example.shcrawler.domain.crawl.source;
 
+import com.example.shcrawler.domain.common.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Entity(name = "crawling_source")
+@Builder
 @NoArgsConstructor
-public class CrawlingSource {
+@AllArgsConstructor
+public class CrawlingSource extends BaseEntity {
 
     @Id()
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,14 +32,6 @@ public class CrawlingSource {
 
     @Column(name = "crawling_type", columnDefinition = "varchar(100)")
     private String crawlingType;
-
-    @Builder
-    public CrawlingSource(String crawlingUrl, String siteName, String crawlingObject, String crawlingType) {
-        this.crawlingUrl = crawlingUrl;
-        this.siteName = siteName;
-        this.crawlingObject = crawlingObject;
-        this.crawlingType = crawlingType;
-    }
 
     public String getUrl() {
         return crawlingUrl;

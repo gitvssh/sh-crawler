@@ -20,14 +20,18 @@ public class CrawlingServiceImpl implements CrawlingService {
     private final CrawlDataRepository crawlDataRepository;
     private final MongoTemplate mongoTemplate;
 
-    // queryDSL 적용 후 Optional 처리 할 것
+    @Override
+    public List<CrawlData> getCrawlData() {
+        return crawlDataRepository.findByStatus("crawl");
+    }
+// queryDSL 적용 후 Optional 처리 할 것
 
     /**
      * 크롤링 대상 리스트 조회
      * <p>
      * 데이터베이스에서 크롤링 대상 리스트를 조회한다.
      *
-     * @return
+     * @return 크롤링 대상 리스트
      */
     @Override
     public List<CrawlingSource> getCrawlingSourceList() {
@@ -37,44 +41,24 @@ public class CrawlingServiceImpl implements CrawlingService {
     /**
      * 크롤링 데이터 저장
      *
-     * @param url
-     * @param crawlData
+     * @param url      크롤링 대상 URL
+     * @param crawlData 크롤링 데이터
      */
     @Override
     public void saveCrawlData(String url, String crawlData) {
         CrawlData crawlingData = CrawlData.builder()
                 .rawContent(crawlData)
                 .rawUrl(url)
-                .crawlContent("test"+crawlData) // 추후 크롤링 데이터 처리 로직 추가
+                .crawlContent(crawlData) // 추후 크롤링 데이터 처리 로직 추가
+                .status("crawl")
                 .build();
         mongoTemplate.save(crawlingData);
-        // 디버깅용 중복 저장
-        CrawlData crawlingData2 = CrawlData.builder()
-                .rawContent(crawlData)
-                .rawUrl(url)
-                .crawlContent("test2"+crawlData) // 추후 크롤링 데이터 처리 로직 추가
-                .build();
-//        crawlDataRepository.save(crawlingData);
-        mongoTemplate.insert(crawlingData2);
-        CrawlData crawlingData3 = CrawlData.builder()
-                .rawContent(crawlData)
-                .rawUrl(url)
-                .crawlContent("test3"+crawlData) // 추후 크롤링 데이터 처리 로직 추가
-                .build();
-        mongoTemplate.save(crawlingData3);
-        CrawlData crawlingData4 = CrawlData.builder()
-                .rawContent(crawlData)
-                .rawUrl(url)
-                .crawlContent("test4"+crawlData) // 추후 크롤링 데이터 처리 로직 추가
-                .build();
-//        crawlDataRepository.save(crawlingData);
-        mongoTemplate.insert(crawlingData4);
     }
 
     /**
      * 크롤링 성공 이력 저장
      *
-     * @param crawlingSource
+     * @param crawlingSource 크롤링 대상
      */
     @Override
     public void saveCrawlingHistory(CrawlingSource crawlingSource) {

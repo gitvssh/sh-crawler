@@ -1,5 +1,6 @@
 package com.example.shcrawler.domain.crawl.history;
 
+import com.example.shcrawler.domain.common.BaseEntity;
 import com.example.shcrawler.domain.crawl.source.CrawlingSource;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,12 +10,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity(name = "crawling_history")
-@RequiredArgsConstructor
-public class CrawlingHistory {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class CrawlingHistory extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,9 +32,4 @@ public class CrawlingHistory {
     @Column(name = "status", columnDefinition = "varchar(30)")
     private String status;
 
-    @Builder
-    public CrawlingHistory(CrawlingSource crawlingSource, String status) {
-        this.crawlingSource = crawlingSource;
-        this.status = status;
-    }
 }
